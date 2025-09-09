@@ -1,6 +1,6 @@
 # Books
 
-## Initial Setup
+## Initial Setup
 Begin by setting up the `package.json` file.
 
 ```shell
