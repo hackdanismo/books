@@ -32,6 +32,7 @@ The `organisations-api` is the API microservice that manages adding, deleting, e
 To run the API:
 
 ```shell
+$ cd organisations-api
 $ npm run dev
 ```
 
