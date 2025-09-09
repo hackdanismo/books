@@ -37,4 +37,4 @@ $ npm run dev
 
 This will run the API at: `http://localhost:4000/`.
 
-To check the health of the API servuce: `http://localhost:4000/health`.
+To check the health of the API service and the server is running, use this endpoint: `http://localhost:4000/health`.
