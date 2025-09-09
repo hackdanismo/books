@@ -7,6 +7,14 @@ The frontend of the application uses `Next.js` as the framework and is found ins
 $ npx create-next-app@latest
 ```
 
+### Install packages
+Install the `npm` packages:
+
+```shell
+$ cd frontend
+$ npm install
+```
+
 ### Run the development server
 To run the development server for the frontend:
 
