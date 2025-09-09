@@ -25,8 +25,8 @@ $ npm run dev
 
 This will open the application in the browser: `http://localhost:3000`.
 
-## Organisation API
-The `organisation-api` is the API microservice that manages adding, deleting, editing and general updates to the organisations in the database. This is created using `ExpressJS`.
+## Organisations API
+The `organisations-api` is the API microservice that manages adding, deleting, editing and general updates to the organisations in the database. This is created using `ExpressJS`.
 
 ### Run the API
 To run the API:
