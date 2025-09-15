@@ -1,17 +1,11 @@
 // Import the Express framework from node_modules
 import express from "express";
+import { PrismaClient } from "@prisma/client";
 
-// Start a counter for organisation IDs, similar to auto-increment in a database
-let _nextId = 1;
+const prisma = new PrismaClient();
+
 // Helper function to return the current date/time in ISO string format
 const now = () => new Date().toISOString();
-
-// Hard-coded data in-place of a database for initial testing of the API
-const organisations = [
-    { id: _nextId++, name: "Acme Fitness", slug: "acme-fitness", contactEmail: "team@acme.fit", createdAt: now(), updatedAt: now() },
-    { id: _nextId++, name: "Bluebird Yoga", slug: "bluebird-yoga", contactEmail: "hello@bluebird.yoga", createdAt: now(), updatedAt: now() },
-    { id: _nextId++, name: "Nimbus Climbing", slug: "nimbus-climbing", contactEmail: "hi@nimbus.climb", createdAt: now(), updatedAt: now() },
-];
 
 // Create an Express application
 const app = express();
@@ -19,13 +13,44 @@ const app = express();
 app.use(express.json());
 
 // Endpoint: Check the health of the service and return a JSON object to test the server is running
-app.get("/health", (_req, res) => {
-    res.json({ ok: true, service: "organisation-api", timestamp: now() });
+app.get("/health", async (_req, res) => {
+    try {
+        // Simple database roundtrip to ensure connection is healthy
+        await prisma.$queryRaw`SELECT 1`;
+        res.json({ ok: true, service: "organisation-api", timestamp: now() });
+    } catch (e) {
+        res.status(500).json({ ok: false, error: "Database is not reachable", timestamp: now() });
+    }
 });
 
-// CRUD routes here
+/**
+ * GET /organisations
+ * Returns all organisations from the database via Prisma
+ */
+app.get("/organisations", async (_req, res) => {
+    try {
+        const organisations = await prisma.organisations.findMany({
+            orderBy: { id: "asc" },
+        });
+        res.json(organisations);
+    } catch (err) {
+        console.error("Failed to fetch organisations:", err);
+        res.status(500).json({ error: "Failed to fetch organisations" });
+    }
+});
 
 // Set the port, default is 4000, if no environment variable is provided
 const PORT = process.env.PORT || 4000;
+
 // Start the Express server, listens on selected port
 app.listen(PORT, () => console.log(`Server is running on: http://localhost:${PORT}`));
+
+// Graceful shutdown: close the Prisma connection
+process.on("SIGINT", async () => {
+    await prisma.$disconnect();
+    process.exit(0);
+});
+process.on("SIGTERM", async () => {
+    await prisma.$disconnect();
+    process.exit(0);
+});
