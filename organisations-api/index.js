@@ -43,7 +43,7 @@ app.get("/organisations", async (_req, res) => {
  * POST /organisations
  * Create and add a new organisation to the database
  */
-app.post("organisations", async (req, res) => {
+app.post("/organisations", async (req, res) => {
     const { name, slug, contactEmail } = req.body;
     
     // Basic validation
