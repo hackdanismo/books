@@ -42,7 +42,7 @@ This will run the API at: `http://localhost:4000/`.
 
 To check the health of the API service and the server is running, use this endpoint: `http://localhost:4000/health`.
 
-### Database (local)
+### Database (local)
 The current database used during development is `SQLite`. This can be installed using `Homebrew`. To check that this is installed on macOS:
 
 ```shell
