@@ -71,3 +71,17 @@ $ npx prisma init --datasource-provider sqlite
 # Create the database and generate the client. Creates the prisma/dev.db file and applies the schema
 $ npx prisma migrate dev --name init
 ```
+
+#### Getting all Organisations
+A `cURL` command can be used to return a list of all organisations in the database by hitting the `organisations` endpoint:
+
+```shell
+$ curl -X GET http://localhost:4000/organisations
+```
+
+#### Adding an Organisation
+We have a `post` endpoint we can use to add a new organisation to the database. to test this using a `cURL` command:
+
+```shell
+$ curl -i -X POST http://localhost:4000/organisations -H "Content-Type: application/json" -d '{"name":"Summit CrossFit","slug":"summit-crossfit","contactEmail":"info@summit.fit"}'
+```
