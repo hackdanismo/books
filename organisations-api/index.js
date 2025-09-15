@@ -29,7 +29,7 @@ app.get("/health", async (_req, res) => {
  */
 app.get("/organisations", async (_req, res) => {
     try {
-        const organisations = await prisma.organisations.findMany({
+        const organisations = await prisma.organisation.findMany({
             orderBy: { id: "asc" },
         });
         res.json(organisations);
