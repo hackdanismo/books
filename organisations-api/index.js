@@ -39,6 +39,34 @@ app.get("/organisations", async (_req, res) => {
     }
 });
 
+/**
+ * POST /organisations
+ * Create and add a new organisation to the database
+ */
+app.post("organisations", async (req, res) => {
+    const { name, slug, contactEmail } = req.body;
+    
+    // Basic validation
+    if (!name || !slug || !contactEmail) {
+        return res.status(400).json({ error: "name, slug, and/or contactEmail are required." });
+    }
+
+    try {
+        const newOrganisation = await prisma.organisation.create({
+            data: {
+                name,
+                slug,
+                contactEmail,
+                // createdAt and updatedAt are handled automatically in the schema
+            }
+        });
+        res.status(201).json(newOrganisation);
+    } catch (err) {
+        console.error("Failed to create an organisation:", err);
+        res.status(500).json({ error: "Failed to create an organisation." });
+    }
+});
+
 // Set the port, default is 4000, if no environment variable is provided
 const PORT = process.env.PORT || 4000;
 
