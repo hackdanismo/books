@@ -16,17 +16,27 @@ async function getOrganisations() {
 }
 
 export default async function Home() {
-  const organisations = await getOrganisations();
+  let organisations = await getOrganisations();
+
+  // Sort by createdAt descending (latest first)
+  organisations = organisations.sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
+  // Take only the latest 4
+  const latestOrgs = organisations.slice(0, 4);
 
   return (
     <main role="main" className="p-8 max-w-5xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Organisations</h1>
 
-      {organisations.length === 0 ? (
+      <h2>Recently Added</h2>
+
+      {latestOrgs.length === 0 ? (
         <p>No organisations found.</p>
       ) : (
         <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {organisations.map((org) => (
+          {latestOrgs.map((org) => (
             <OrganisationCard key={org.id} org={org} />
           ))}
         </div>
